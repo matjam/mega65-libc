@@ -191,11 +191,11 @@ void fc_init(
     fc_textcolor(COLOR_GREEN);
 }
 
-static unsigned char swp;
 unsigned char fc_nyblswap(unsigned char in) // oh why?!
 {
-    swp = in;
 #ifdef __CC65__
+    static unsigned char swp;
+    swp = in;
     __asm__("lda %v", swp);
     __asm__("asl  a");
     __asm__("adc  #$80");
@@ -204,21 +204,20 @@ unsigned char fc_nyblswap(unsigned char in) // oh why?!
     __asm__("adc  #$80");
     __asm__("rol  a");
     __asm__("sta %v", swp);
+    return swp;
 #elif defined(__clang__)
-#pragma GCC warning "LLVM assembly needs to be checked in fc_nyblswap()"
-    asm volatile("ld%0\n"
-                 "asl a\n"
+    asm volatile("asl a\n"
                  "adc #$80\n"
                  "rol a\n"
                  "asl a\n"
                  "adc #$80\n"
                  "rol a\n"
-                 "st%0"
-                 : "+a"(swp));
+                 : "+a"(in));
+    return in;
 #else
 #pragma GCC warning "fc_nyblswap() is not implemented for this compiler"
+    return in;
 #endif
-    return swp;
 }
 
 void fc_flash(byte f)
