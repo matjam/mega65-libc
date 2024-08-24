@@ -340,7 +340,7 @@ himemPtr fc_allocPalMem(word size)
     return 0;
 }
 
-char asciiToPetscii(byte c)
+char asciiToScreencode(byte c)
 {
     // TODO: could be made much faster with translation table
     if (c == '_') {
@@ -355,7 +355,7 @@ char asciiToPetscii(byte c)
     if (c >= 192) {
         return c - 128;
     }
-    return c;
+    return (char)c;
 }
 
 #ifdef __clang__
@@ -740,7 +740,7 @@ void cr(void)
     }
 }
 
-void fc_plotPetsciiChar(byte x, byte y, byte c, byte color, byte exAttr)
+void fc_plotScreenChar(byte x, byte y, byte c, byte color, byte exAttr)
 {
     word adrOffset;
     adrOffset = (x * 2) + (y * 2 * gScreenColumns);
@@ -748,6 +748,11 @@ void fc_plotPetsciiChar(byte x, byte y, byte c, byte color, byte exAttr)
     lpoke(gFcioConfig->screenBase + adrOffset + 1, 0);
     lpoke(gFcioConfig->colourBase + adrOffset + 1, color | exAttr);
     lpoke(gFcioConfig->colourBase + adrOffset, 0);
+}
+
+void fc_plotPetsciiChar(byte x, byte y, byte c, byte color, byte exAttr)
+{
+    fc_plotScreenChar(x, y, c, color, exAttr);
 }
 
 byte fc_wherex(void)
@@ -780,9 +785,9 @@ void fc_putc(char c)
         return;
     }
 
-    out = asciiToPetscii(c);
+    out = asciiToScreencode((byte)c);
 
-    fc_plotPetsciiChar(gCurrentWin->xc + gCurrentWin->x0,
+    fc_plotScreenChar(gCurrentWin->xc + gCurrentWin->x0,
         gCurrentWin->yc + gCurrentWin->y0, out, gCurrentWin->textcolor,
         gCurrentWin->extAttributes);
     gCurrentWin->xc++;
@@ -799,7 +804,7 @@ void fc_putc(char c)
     }
 
     if (csrflag) {
-        fc_plotPetsciiChar(gCurrentWin->xc + gCurrentWin->x0,
+        fc_plotScreenChar(gCurrentWin->xc + gCurrentWin->x0,
             gCurrentWin->yc + gCurrentWin->y0, CURSOR_CHARACTER,
             gCurrentWin->textcolor, 16);
     }
@@ -848,7 +853,7 @@ void fc_cursor(byte onoff)
 {
     csrflag = onoff;
 
-    fc_plotPetsciiChar(gCurrentWin->xc + gCurrentWin->x0,
+    fc_plotScreenChar(gCurrentWin->xc + gCurrentWin->x0,
         gCurrentWin->yc + gCurrentWin->y0, (csrflag ? CURSOR_CHARACTER : 32),
         gCurrentWin->textcolor, (csrflag ? 16 : 0));
 }

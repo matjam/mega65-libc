@@ -516,7 +516,7 @@ fciInfo* fc_displayFCIFile(char* filename, byte x0, byte y0);
 void fc_plotExtChar(byte x, byte y, byte c);
 
 /**
- * @brief plot petscii character
+ * @brief plot screencode character
  *
  * @param x screen column
  * @param y screen row
@@ -524,6 +524,23 @@ void fc_plotExtChar(byte x, byte y, byte c);
  * @param color character colour
  * @param exAttr extended attributes
  */
+void fc_plotScreenChar(byte x, byte y, byte c, byte color, byte exAttr);
+
+/**
+ * @deprecated The function name is misleading as the supplied character code
+ *             is expected to be a screen character code, not a PETSCII code.
+ *             Use @ref fc_plotScreenChar(byte, byte, byte, byte, byte) instead.
+ * @brief plot screencode character
+ *
+ * @param x screen column
+ * @param y screen row
+ * @param c character code
+ * @param color character colour
+ * @param exAttr extended attributes
+ */
+#ifdef __clang__
+[[deprecated("Use fc_plotScreenChar() instead.")]]
+#endif
 void fc_plotPetsciiChar(byte x, byte y, byte c, byte color, byte exAttr);
 
 #endif // __MEGA65_FCIO_H
