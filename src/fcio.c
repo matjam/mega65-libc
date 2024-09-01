@@ -206,13 +206,15 @@ unsigned char fc_nyblswap(unsigned char in) // oh why?!
     __asm__("sta %v", swp);
     return swp;
 #elif defined(__clang__)
-    asm volatile("asl a\n"
-                 "adc #$80\n"
-                 "rol a\n"
-                 "asl a\n"
-                 "adc #$80\n"
-                 "rol a\n"
-                 : "+a"(in));
+    __attribute__((leaf)) asm volatile("asl a    \n"
+                                       "adc #$80 \n"
+                                       "rol a    \n"
+                                       "asl a    \n"
+                                       "adc #$80 \n"
+                                       "rol a    \n"
+                                       : "+a"(in) /* output */
+                                       :          /* no input */
+                                       : "p" /* clobbers */);
     return in;
 #else
 #pragma GCC warning "fc_nyblswap() is not implemented for this compiler"
