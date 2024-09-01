@@ -206,14 +206,14 @@ unsigned char fc_nyblswap(unsigned char in) // oh why?!
     __asm__("sta %v", swp);
     return swp;
 #elif defined(__clang__)
-    __attribute__((leaf)) asm volatile("asl a    \n"
+    __attribute__((leaf)) asm volatile("asl      \n"
                                        "adc #$80 \n"
-                                       "rol a    \n"
-                                       "asl a    \n"
+                                       "rol      \n"
+                                       "asl      \n"
                                        "adc #$80 \n"
-                                       "rol a    \n"
-                                       : "+a"(in) /* output */
-                                       :          /* no input */
+                                       "rol      \n"
+                                       : "=a"(in) /* output */
+                                       : "a"(in)  /* input */
                                        : "p" /* clobbers */);
     return in;
 #else
