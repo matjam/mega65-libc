@@ -75,7 +75,8 @@ chdir(char* filename);
 
 /**
  * @brief Change working directory to the root directory
- * @return Error code (currently unused)
+ * @return Error code from `hyppo_selectdrive`. 128 = no such drive.
+ * @todo Should probably be deprecated in favor of `cdrootdir()` to better reflect hyppo naming.
  */
 #ifdef __clang__
 __attribute__((leaf))
