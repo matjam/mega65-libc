@@ -141,7 +141,7 @@ void dma_poke(uint32_t address, uint8_t value);
  * @brief Copy a block of memory using DMA
  * @param source_address 28-bit address to copy from
  * @param destination_address 28-bit address to copy to
- * @param count Number of bytes to copy
+ * @param count Number of bytes to copy. Note that 0 = 64 kB.
  */
 void lcopy(uint32_t source_address, uint32_t destination_address, size_t count);
 
@@ -149,7 +149,7 @@ void lcopy(uint32_t source_address, uint32_t destination_address, size_t count);
  * @brief Fill a block of memory with a single byte using DMA
  * @param destination_address Start address (28-bit)
  * @param value Fill value
- * @param count Number of bytes to fill
+ * @param count Number of bytes to fill. Note that 0 = 64 kB.
  */
 void lfill(uint32_t destination_address, uint8_t value, size_t count);
 
@@ -157,7 +157,7 @@ void lfill(uint32_t destination_address, uint8_t value, size_t count);
  * @brief Fill a block of memory with a single byte using DMA with a step
  * @param destination_address Start address (28-bit)
  * @param value Fill value
- * @param count Number of bytes to fill
+ * @param count Number of bytes to fill. Note that 0 = 64 kB.
  * @param skip Skip every n bytes
  */
 void lfill_skip(
