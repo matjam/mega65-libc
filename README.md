@@ -37,8 +37,11 @@ Simple C library for the MEGA65
    cmake -DCMAKE_PREFIX_PATH=$HOME/llvm-mos -B build
    cd build
    make
+   make install # install library files
    make test # if `xmega65` (Xemu) was in your path when running cmake
    ~~~
+
+Location of installed mega65-libc should be included into cmake's package search paths, e.g. by adding its path to the ```CMAKE_PREFIX_PATH```.
 
 #### Dependent projects
 
